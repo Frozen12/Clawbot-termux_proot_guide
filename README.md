@@ -1,9 +1,10 @@
-# OpenClaw Setup Guide for Android 
+
+# OpenClaw Setup Guide for Android
 ---
 
 <p align="center">
-  <img src= openclaw-dashboard.jpeg width="45%" />
-  <img src= termux-setup.jpeg width="45%" />
+  <img src="openclaw-dashboard.jpeg" width="45%" />
+  <img src="termux-setup.jpeg" width="45%" />
 </p>
 
 ## What You’re Building
@@ -24,114 +25,135 @@ Make sure you have:
 - Android phone (Android 10 or above recommended)
 - Stable internet connection
 - Gemini API key (from Google AI Studio)
-- Termux installed from F-Droid or github (not Play Store)
-
+- Termux installed from F‑Droid or GitHub (not Play Store)
+Older Termux versions may run proot-distro slowly on Android 10+. Using the latest Termux beta is recommended for better performance.
 ---
 
 ## Install Termux
 
-1. Go to **F-Droid.org** or **github**
+1. Go to **F‑Droid.org** or **GitHub**
 2. Download and install **Termux_v0.119.0-beta.3**
 3. Open the Termux app
 
+older version of Termux with proot-dristo feels sluggish tested on Android 13 that's why I suggested latest termux beta
 ---
 
-## Commands
+## Initial Termux Setup
 
 ```
 pkg update && pkg upgrade -y
-
-```
-## install proot-distro
-```
-pkg install proot-distro
-
+pkg install -y proot-distro
 ```
 
-## install debian
+---
+
+## Install Debian
+
 ```
 proot-distro install debian
-
 ```
 
-## login debian
+Login to Debian:
+
 ```
 proot-distro login debian
-
 ```
-## Update system
+
+---
+
+## Update Debian
+
 ```
 apt update && apt upgrade -y
-
 ```
 
-## Install Dependencies
-```
-apt install -y curl ca-certificates nano fish
+---
+
+## Install Required Packages
 
 ```
-## Change Default Shell to Fish
+apt install -y curl ca-certificates git nano
 ```
-chsh -s /usr/bin/fish
+
+---
+
+## Improve Bash Experience (Optional)
+
+This adds autosuggestions, syntax highlighting, and better history search while keeping Bash compatibility.
 
 ```
-=/> Now restart your shell or login again.
+git clone --recursive https://github.com/akinomyoga/ble.sh.git
+cd ble.sh
+make install
 
-## Install Node.js LTS (System-wide)
+echo '[[ $- == *i* ]] && source ~/.local/share/blesh/ble.sh' >> ~/.bashrc
+exec bash
+```
 
-Run the following command to install **Node.js LTS**:
+---
+
+## Install Node.js LTS (System‑wide)
 
 ```
 curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nodejs
 ```
 
-This installs:
+Verify installation:
 
-- Node.js LTS
-- npm
-- system-wide binaries
+```
+node -v
+npm -v
+```
 
 ---
 
-## Enable pnpm with Corepack
+## Enable pnpm
 
 ```
 corepack enable
 corepack prepare pnpm@latest --activate
 ```
 
----
+Verify:
 
-## Verify Installation
 ```
-node -v
 pnpm -v
 ```
-## update and install git
-```
-apt update
-apt install -y git
+
+---
+
+## Configure pnpm Global Directory
+
+Sometimes pnpm cannot detect the global binary directory.
 
 ```
+mkdir -p ~/.local/share/pnpm
+echo 'export PNPM_HOME="$HOME/.local/share/pnpm"' >> ~/.bashrc
+echo 'export PATH="$PNPM_HOME:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
 
+---
 
-##  Install OpenClaw
+## Install OpenClaw
+
 ```
 pnpm add -g openclaw@latest
-
 ```
-After installation, check:
+
+Verify installation:
 
 ```
 openclaw --version
-
 ```
+
 ---
 
 ## Fix Android Network Interface Error
 
-Create the **hijack script**:
+This workaround prevents Node.js from crashing when Android network interfaces are detected incorrectly.
 
+Create the hijack script:
 
 ```
 cat <<EOF > /root/hijack.js
@@ -140,8 +162,7 @@ os.networkInterfaces = () => ({});
 EOF
 ```
 
-Make it load automatically:
-
+Load it automatically:
 
 ```
 echo 'export NODE_OPTIONS="-r /root/hijack.js"' >> ~/.bashrc
@@ -154,24 +175,19 @@ source ~/.bashrc
 
 Start onboarding:
 
-
 ```
 openclaw onboard
 ```
 
 When prompted for **Gateway Bind**, select:
 
-
-
-127.0.0.1 (Loopback)
-
+```
+127.0.0.1
+```
 
 ---
 
 ## Launch the OpenClaw Gateway
-
-Start the agent:
-
 
 ```
 openclaw gateway --verbose
@@ -181,89 +197,74 @@ openclaw gateway --verbose
 
 ## Access the Web Dashboard
 
-Open your mobile browser and go to:
-
+Open your mobile browser and visit:
 
 ```
 http://127.0.0.1:18789
+```
+
+Get your gateway token:
+
+Open a new terminal and run:
 
 ```
-Get your gateway token:
-start new terminal session
-login ubuntu
-run -
-```
+proot-distro login debian
 cat ~/.openclaw/openclaw.json
 ```
-openclaw config get gateway.auth.token
 
+or
+
+```
+openclaw config get gateway.auth.token
+```
 
 Paste the token into the dashboard login screen.
 
 ---
 
-## Useful Agent Commands
-
-
-
-/status
-
-Check agent health.
-
-
-
-/think high
-
-Enable deep reasoning mode.
-
-
-
-/reset
-
-Clear memory and restart the session.
-
----
-
-
 # Optional Tools & Integrations
 
-These tools are **not required**, but they are useful when working with **OpenClaw agents**.
+These tools can extend OpenClaw functionality.
 
 ---
 
-# QMD - Query Markup Documents
+## QMD - Query Markup Documents
 
-Useful backend for Openclaw memory keeping
+Useful backend for OpenClaw memory systems.
 
 ```
 pnpm add -g @tobilu/qmd
-
 ```
 
-# OpenAI Codex CLI
+---
 
-Useful for accessing openAI models without api
+## OpenAI Codex CLI
+
+Useful for coding agents and OpenAI integrations.
 
 ```
 pnpm add -g @openai/codex
 ```
-# Google Gemini CLI
 
-Allows using **Gemini models without API keys**.
+---
+
+## Google Gemini CLI
+
+Allows authentication using a Google account instead of manually managing API keys.
 
 ```
 pnpm add -g @google/gemini-cli
 ```
+
 ---
 
 ## Stability Tips
 
-### Prevent Termux from Sleeping
+### Prevent Termux From Sleeping
 
-
-
+```
 termux-wake-lock
-
+```
 
 ### Disable Battery Optimization
 
@@ -282,7 +283,7 @@ For true 24/7 operation, keep the phone connected to power.
 
 - Never share your API keys publicly
 - Do not share your gateway token
-- Use a separate Google account for AI keys if possible
+- Use a separate Google account for AI services if possible
 
 ---
 
@@ -292,7 +293,3 @@ For true 24/7 operation, keep the phone connected to power.
 - Build a personal AI assistant
 - Connect it to messaging apps
 - Use it as a mobile automation node
-
----
-
-
