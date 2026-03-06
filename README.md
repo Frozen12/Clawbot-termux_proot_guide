@@ -153,7 +153,8 @@ Some Android environments report incorrect network interfaces which can crash No
 Create a small hijack script:
 
 ```
-cat <<EOF > /root/hijack.js
+mkdir -p /root/.hijack
+cat <<EOF > /root/.hijack/hijack.js
 const os = require('os');
 os.networkInterfaces = () => ({});
 EOF
@@ -162,7 +163,7 @@ EOF
 Load it automatically:
 
 ```
-echo 'export NODE_OPTIONS="-r /root/hijack.js"' >> ~/.bashrc
+echo 'export NODE_OPTIONS="-r /root/.hijack/hijack.js"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
