@@ -1,7 +1,11 @@
 
 # OpenClaw Setup Guide for Android
-
 ---
+
+<p align="center">
+  <img src="openclaw-dashboard.jpeg" width="45%" />
+  <img src="termux-setup.jpeg" width="45%" />
+</p>
 
 ## What You’re Building
 
