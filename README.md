@@ -63,6 +63,13 @@ proot-distro login debian
 
 ---
 
+
+## Setup Bash Shell
+
+```
+echo 'export SHELL=/bin/bash' >> ~/.bashrc
+source ~/.bashrc
+```
 ## Update Debian
 
 ```
