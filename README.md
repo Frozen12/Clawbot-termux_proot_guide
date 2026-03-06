@@ -24,17 +24,15 @@ Make sure you have:
 - Android phone (Android 10 or above recommended)
 - Stable internet connection
 - Gemini API key (from Google AI Studio)
-- Termux installed from F-Droid (not Play Store)
+- Termux installed from F-Droid or github (not Play Store)
 
 ---
 
 ## Install Termux
 
-1. Go to **F-Droid.org**
-2. Download and install **F-Droid**
-3. Search for **Termux**
-4. Install Termux
-5. Open the Termux app
+1. Go to **F-Droid.org** or **github**
+2. Download and install **Termux_v0.119.0-beta.3**
+3. Open the Termux app
 
 ---
 
@@ -50,15 +48,15 @@ pkg install proot-distro
 
 ```
 
-## install ubuntu
+## install debian
 ```
-proot-distro install ubuntu
+proot-distro install debian
 
 ```
 
-## login ubuntu
+## login debian
 ```
-proot-distro login ubuntu
+proot-distro login debian
 
 ```
 ## Update system
@@ -67,29 +65,48 @@ apt update && apt upgrade -y
 
 ```
 
-## Install curl 
+## Install Dependencies
 ```
-apt install -y curl
+apt install -y curl ca-certificates nano fish
 
 ```
-## Add NodeSource repo
+## Change Default Shell to Fish
+```
+chsh -s /usr/bin/fish
 
 ```
-curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+=/> Now restart your shell or login again.
+
+## Install Node.js LTS (System-wide)
+
+Run the following command to install **Node.js LTS**:
 
 ```
-## Install Node.js
+curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt install -y nodejs
 ```
-apt install -y nodejs
+
+This installs:
+
+- Node.js LTS
+- npm
+- system-wide binaries
+
+---
+
+## Enable pnpm with Corepack
 
 ```
-## Verify
+corepack enable
+corepack prepare pnpm@latest --activate
+```
+
+---
+
+## Verify Installation
 ```
 node -v
-npm -v
-
+pnpm -v
 ```
-
 ## update and install git
 ```
 apt update
@@ -100,7 +117,7 @@ apt install -y git
 
 ##  Install OpenClaw
 ```
-npm install -g openclaw@latest
+pnpm add -g openclaw@latest
 
 ```
 After installation, check:
@@ -113,7 +130,7 @@ openclaw --version
 
 ## Fix Android Network Interface Error
 
-Create the hijack script:
+Create the **hijack script**:
 
 
 ```
@@ -205,6 +222,38 @@ Enable deep reasoning mode.
 
 Clear memory and restart the session.
 
+---
+
+
+# Optional Tools & Integrations
+
+These tools are **not required**, but they are useful when working with **OpenClaw agents**.
+
+---
+
+# QMD - Query Markup Documents
+
+Useful backend for Openclaw memory keeping
+
+```
+pnpm add -g @tobilu/qmd
+
+```
+
+# OpenAI Codex CLI
+
+Useful for accessing openAI models without api
+
+```
+pnpm add -g @openai/codex
+```
+# Google Gemini CLI
+
+Allows using **Gemini models without API keys**.
+
+```
+pnpm add -g @google/gemini-cli
+```
 ---
 
 ## Stability Tips
