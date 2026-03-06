@@ -26,7 +26,7 @@ Make sure you have:
 - Stable internet connection
 - Gemini API key (from Google AI Studio)
 - Termux installed from F‑Droid or GitHub (not Play Store)
-Older Termux versions may run proot-distro slowly on Android 10+. Using the latest Termux beta is recommended for better performance.
+
 ---
 
 ## Install Termux
@@ -35,7 +35,8 @@ Older Termux versions may run proot-distro slowly on Android 10+. Using the late
 2. Download and install **Termux_v0.119.0-beta.3**
 3. Open the Termux app
 
-older version of Termux with proot-dristo feels sluggish tested on Android 13 that's why I suggested latest termux beta
+Older Termux versions may run proot-distro slowly on Android 10+. Using the latest Termux beta is recommended for better performance.
+
 ---
 
 ## Initial Termux Setup
