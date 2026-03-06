@@ -88,6 +88,7 @@ cd ble.sh
 make install
 
 echo '[[ $- == *i* ]] && source ~/.local/share/blesh/ble.sh' >> ~/.bashrc
+cd ~
 exec bash
 ```
 
