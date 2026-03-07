@@ -81,7 +81,7 @@ apt update && apt upgrade -y
 ## Install Required Packages
 
 ```
-apt install -y curl ca-certificates git nano
+apt install -y curl ca-certificates git nano build-essential python3 make g++ gcc
 ```
 
 ---
